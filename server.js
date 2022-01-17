@@ -12,7 +12,7 @@ const app = express();
 const port = process.env.PORT || 8000;
 //connect MongoDB
 // process.env.TOKEN_SECRET
-const connections_url = `mongodb+srv://diyarsali:${process.env.DBSECRET}@cluster0.dvfal.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const connections_url = `mongodb+srv://diyarsali:diyarsali123@cluster0.dvfal.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 mongoose.connect(connections_url, {
   useNewUrlParser: true,
 
