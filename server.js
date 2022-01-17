@@ -34,6 +34,9 @@ app.get("/get", (req, res) => {
     else res.status(200).send(data);
   });
 });
+app.get('/', (req,res) => {
+  res.send("hellow")
+})
 app.use("/question", questionRoute);
 app.use("/users", userRoute);
 app.use("/result", resultRoute);
