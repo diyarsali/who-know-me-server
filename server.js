@@ -28,15 +28,13 @@ app.use(Cors());
 // app.use("/", (req, res) => {
 //   res.send("hellow hellow worlds");
 // });
-app.get("/get", (req, res) => {
+app.get("/", (req, res) => {
   User.find((err, data) => {
     if (err) res.status(500).send(err);
     else res.status(200).send(data);
   });
 });
-app.get('/', (req,res) => {
-  res.send("hellow")
-})
+
 app.use("/question", questionRoute);
 app.use("/users", userRoute);
 app.use("/result", resultRoute);
