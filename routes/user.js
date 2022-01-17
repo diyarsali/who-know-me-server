@@ -1,0 +1,126 @@
+import express from "express";
+import bcrypt from "bcryptjs";
+import User from "../models/user.js";
+import jwt from "jsonwebtoken";
+const router = express.Router();
+
+import verifyJWT from "../config/auth.js";
+// SIGNUP
+router.post("/Signup", (req, res) => {
+  let data = req.body;
+  let usernameAvailable = true;
+  User.findOne({ username: data.username }).then((user) => {
+    if (user) {
+      console.log("user  " + user.username + " is a avaliable");
+      res.send({ usedUsername: true });
+      return;
+    } else {
+      let newUser = new User();
+      newUser.name = data.name;
+      newUser.username = data.username;
+      newUser.password = data.password;
+      bcrypt.genSalt(10, (err, salt) => {
+        if (err) console.log("Failed generating salt bcrypt");
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+          newUser.password = hash;
+          newUser.save((err) => {
+            if (err) {
+              console.log("Error saving user into mongo");
+              return;
+            }
+            res.send({ userRegistered: true, usedUsername: false });
+          });
+        });
+      });
+    }
+  });
+});
+
+//Login Post
+router.post("/login", async (req, res, next) => {
+  let username = req.body.username;
+  // console.log(username);
+  let password = req.body.password;
+
+  const user = await User.findOne({ username: username });
+  if (!user) {
+    console.log("no user found");
+    res.send({ failedLoggingin: true });
+  } else {
+    bcrypt.compare(password, user.password, function (err, isMatch) {
+      if (err) console.log("password error");
+      if (isMatch) {
+        console.log("logged in ");
+        const token = jwt.sign(
+          { username: user.username, id: user._id },
+          process.env.TOKEN_SECRET
+        );
+
+        res.send({ login: true, token, id: user._id });
+        // console.log(token);
+      } else {
+        console.log("wrong password");
+        res.send({ failedLoggingin: true });
+      }
+    });
+  }
+});
+
+//get all userName
+
+router.post("/getusers", (req, res) => {
+  // console.log(req.body);
+  // User.find({ username: { $ne: req.body.username } }, (err, user) => {
+  // 	res.send(user);
+  // 	console.log(user);
+  // }).select({ username: 1, _id: 0 });
+  User.find({ username: { $ne: req.body.username } }, (err, user) => {
+    res.send(user);
+    console.log(user);
+  }).select({ username: 1 });
+});
+
+// get users by search
+
+// router.post('/getUsers', (req, res) => {
+// 	let user = req.body;
+// 	let userAuth = req.user.username;
+// 	User.find(
+// 		{
+// 			username: { $ne: userAuth },
+// 			$or: [ { username: { $regex: user.username } }, { name: { $regex: user.name } } ]
+// 		},
+// 		{
+// 			_id: 0,
+// 			name: 1,
+// 			username: 1
+// 		},
+// 		(err, user) => {
+// 			res.send(user);
+// 		}
+// 	);
+// });
+
+// test route for ensuer user is login
+router.get("/ensureAuthenticated", verifyJWT, (req, res) => {
+  // console.log('req.user  ' + req.user);
+  // res.send({ username: req.user });
+
+  jwt.verify(req.token, process.env.TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      res.send({ ensureAuthenticated: false, Loading: false });
+    } else {
+      res.send({ ensureAuthenticated: true, Loading: false, decoded });
+      // console.log(req.token);
+    }
+  });
+});
+
+//test
+// router.get('/', (req, res) => {
+// 	User.find({ username: 'diyar' }, (err, user) => {
+// 		res.send(user);
+// 	});
+// });
+
+export default router;
