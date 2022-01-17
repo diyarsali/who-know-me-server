@@ -28,7 +28,7 @@ app.use(Cors());
 // app.use("/", (req, res) => {
 //   res.send("hellow hellow worlds");
 // });
-router.get("/get", (req, res) => {
+app.get("/get", (req, res) => {
   User.find((err, data) => {
     if (err) res.status(500).send(err);
     else res.status(200).send(data);
