@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import Cors from "cors";
 import dotenv from "dotenv";
+import User from "./models/user.js";
 dotenv.config();
 
 import questionRoute from "./routes/question.js";
@@ -27,6 +28,12 @@ app.use(Cors());
 // app.use("/", (req, res) => {
 //   res.send("hellow hellow worlds");
 // });
+router.get("/get", (req, res) => {
+  User.find((err, data) => {
+    if (err) res.status(500).send(err);
+    else res.status(200).send(data);
+  });
+});
 app.use("/question", questionRoute);
 app.use("/users", userRoute);
 app.use("/result", resultRoute);
