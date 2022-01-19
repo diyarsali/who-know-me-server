@@ -6,52 +6,18 @@ const router = express.Router();
 //  import jwt from  'jsonwebtoken';
 // saving question
 router.post("/save", (req, res) => {
-  var SaveQuestion = new Question({
-    user: req.body.username,
-    question: req.body.question,
-    answerA: req.body.answerA,
-    answerB: req.body.answerB,
-    answerC: req.body.answerC,
-    answerD: req.body.answerD,
-    rightAnswer: req.body.realAnswer,
-  });
+  // console.log(req.body);
+  var questionAdd = req.body;
+  // console.log(questionAdd);
 
-  SaveQuestion.save((err) => {
+  Question.create(questionAdd, (err, data) => {
     if (err) {
-      console.log("Error saving Message into mongo");
-      return;
+      res.status(500).send(err);
+      console.log(err);
+    } else {
+      res.status(201).send(data);
     }
-    console.log("Document inserted succussfully!");
   });
-});
-
-router.post("/update", (req, res) => {
-  console.log("new " + req.body.question);
-  console.log("old " + req.body.previousQuestion);
-  console.log(req.body.username);
-  Question.updateOne(
-    {
-      user: req.body.username,
-      question: req.body.previousQuestion,
-    },
-    {
-      question: req.body.question,
-      answerA: req.body.answerA,
-      answerB: req.body.answerB,
-      answerC: req.body.answerC,
-      answerD: req.body.answerD,
-      rightAnswer: req.body.realAnswer,
-    },
-    function (err, result) {
-      if (err) {
-        res.send(err);
-      } else {
-        // console.log('update');
-        console.log(result);
-        // res.send(result);
-      }
-    }
-  );
 });
 
 // router.get('/up', (req, res) => {
@@ -76,6 +42,7 @@ router.post("/update", (req, res) => {
 // 		}
 // 	);
 // });
+
 // get question to auth user
 router.post("/getAll", (req, res) => {
   const user = req.body.username;
@@ -143,4 +110,32 @@ router.post("/deleteAll", (req, res) => {
     });
 });
 
+// router.post("/update", (req, res) => {
+//   console.log("new " + req.body.question);
+//   console.log("old " + req.body.previousQuestion);
+//   console.log(req.body.username);
+//   Question.updateOne(
+//     {
+//       user: req.body.username,
+//       question: req.body.previousQuestion,
+//     },
+//     {
+//       question: req.body.question,
+//       answerA: req.body.answerA,
+//       answerB: req.body.answerB,
+//       answerC: req.body.answerC,
+//       answerD: req.body.answerD,
+//       rightAnswer: req.body.realAnswer,
+//     },
+//     function (err, result) {
+//       if (err) {
+//         res.send(err);
+//       } else {
+//         // console.log('update');
+//         console.log(result);
+//         // res.send(result);
+//       }
+//     }
+//   );
+// });
 export default router;

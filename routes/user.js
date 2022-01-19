@@ -8,6 +8,7 @@ import verifyJWT from "../config/auth.js";
 // SIGNUP
 router.post("/Signup", (req, res) => {
   let data = req.body;
+
   let usernameAvailable = true;
   User.findOne({ username: data.username }).then((user) => {
     if (user) {
@@ -15,20 +16,28 @@ router.post("/Signup", (req, res) => {
       res.send({ usedUsername: true });
       return;
     } else {
-      let newUser = new User();
-      newUser.name = data.name;
-      newUser.username = data.username;
-      newUser.password = data.password;
+      let newUser = data;
       bcrypt.genSalt(10, (err, salt) => {
         if (err) console.log("Failed generating salt bcrypt");
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           newUser.password = hash;
-          newUser.save((err) => {
+          // console.log(newUser);
+          User.create(newUser, (err, dataUser) => {
             if (err) {
-              console.log("Error saving user into mongo");
-              return;
+              res.status(500).send(err);
+            } else {
+              const token = jwt.sign(
+                { username: dataUser.username, id: dataUser._id },
+                "fdsfdsafdsafdasffdsaf"
+              );
+              console.log(token);
+              res.status(201).send({
+                token: token,
+                id: dataUser._id,
+                userRegistered: true,
+                usedUsername: false,
+              });
             }
-            res.send({ userRegistered: true, usedUsername: false });
           });
         });
       });
@@ -53,7 +62,7 @@ router.post("/login", async (req, res, next) => {
         console.log("logged in ");
         const token = jwt.sign(
           { username: user.username, id: user._id },
-          fdsfdsafdsafdasffdsaf
+          "fdsfdsafdsafdasffdsaf"
         );
 
         res.send({ login: true, token, id: user._id });
