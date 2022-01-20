@@ -60,7 +60,7 @@ router.post("/getQuestion", (req, res) => {
   // let id = mongoose.Types.ObjectId(req.body.authID);
 
   let id = req.body.authID;
-  // console.log(id);
+  console.log(id);
   if (id.match(/^[0-9a-fA-F]{24}$/)) {
     User.findById(id, function (err, user) {
       if (err) {

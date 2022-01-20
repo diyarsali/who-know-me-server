@@ -28,9 +28,10 @@ router.post("/Signup", (req, res) => {
             } else {
               const token = jwt.sign(
                 { username: dataUser.username, id: dataUser._id },
-                "fdsfdsafdsafdasffdsaf"
+                // "fdsfdsafdsafdasffdsaf"
+                process.env.TOKEN_SECRET
               );
-              console.log(token);
+
               res.status(201).send({
                 token: token,
                 id: dataUser._id,
@@ -62,7 +63,7 @@ router.post("/login", async (req, res, next) => {
         console.log("logged in ");
         const token = jwt.sign(
           { username: user.username, id: user._id },
-          "fdsfdsafdsafdasffdsaf"
+          process.env.TOKEN_SECRET
         );
 
         res.send({ login: true, token, id: user._id });
@@ -78,15 +79,10 @@ router.post("/login", async (req, res, next) => {
 //get all userName
 
 router.post("/getusers", (req, res) => {
-  // console.log(req.body);
-  // User.find({ username: { $ne: req.body.username } }, (err, user) => {
-  // 	res.send(user);
-  // 	console.log(user);
-  // }).select({ username: 1, _id: 0 });
   User.find({ username: { $ne: req.body.username } }, (err, user) => {
     res.send(user);
-    console.log(user);
-  }).select({ username: 1 });
+    // console.log(user);
+  }).select({ username: 1, name: 1 });
 });
 
 // get users by search
@@ -112,9 +108,6 @@ router.post("/getusers", (req, res) => {
 
 // test route for ensuer user is login
 router.get("/ensureAuthenticated", verifyJWT, (req, res) => {
-  // console.log('req.user  ' + req.user);
-  // res.send({ username: req.user });
-
   jwt.verify(req.token, process.env.TOKEN_SECRET, (err, decoded) => {
     if (err) {
       res.send({ ensureAuthenticated: false, Loading: false });
@@ -124,12 +117,5 @@ router.get("/ensureAuthenticated", verifyJWT, (req, res) => {
     }
   });
 });
-
-//test
-// router.get('/', (req, res) => {
-// 	User.find({ username: 'diyar' }, (err, user) => {
-// 		res.send(user);
-// 	});
-// });
 
 export default router;
