@@ -11,18 +11,7 @@ router.post("/add", async (req, res) => {
   let answearUsername = req.body.answearUsername;
   let RightAnswer = req.body.RightAnswer;
   // console.log(RightAnswer);
-
-  Result.create(
-    { user: "balen", answearUsername: answearUsername },
-    (err, data) => {
-      if (err) {
-        res.status(500).send(err);
-        console.log(err);
-      } else {
-        console.log("result insertt ");
-      }
-    }
-  );
+  console.log("result insertt ");
 });
 
 // to ensure user is answering to another user
