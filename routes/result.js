@@ -8,10 +8,7 @@ import User from "../models/user.js";
 // result saving
 router.post("/add", async (req, res) => {
   let recieverID = req.body.recieverID;
-  let answearUsername = req.body.answearUsername;
-  let RightAnswer = req.body.RightAnswer;
-  // console.log(RightAnswer);
-  console.log("result insertt ");
+  console.log(recieverID);
 });
 
 // to ensure user is answering to another user
