@@ -10,8 +10,9 @@ const app = express();
 const port = process.env.PORT || 8000;
 //connect MongoDB
 
-const connections_url = `mongodb+srv://diyarsali:diyarsali123@cluster0.dvfal.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-mongoose.connect(connections_url, {
+// const connections_url = process.env.DBURL;
+
+mongoose.connect(process.env.DBURL, {
   useNewUrlParser: true,
 
   useUnifiedTopology: true,
