@@ -28,9 +28,23 @@ app.get("/", (req, res) => {
     res.status(200).send(data);
   });
 });
-app.use("/question", questionRoute);
-app.use("/users", userRoute);
-app.use("/result", resultRoute);
+
+// get question to auth user
+app.post("/getAll", (req, res) => {
+  const user = req.body.username;
+  Question.find({ user: user }, (err, question) => {
+    if (err) {
+      console.log(err);
+    } else {
+      // console.log(question);
+      res.send(question);
+    }
+  });
+});
+
+// app.use("/question", questionRoute);
+// app.use("/users", userRoute);
+// app.use("/result", resultRoute);
 
 //Bind connection to error event (to get notification of connection errors)
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
