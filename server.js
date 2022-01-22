@@ -5,6 +5,7 @@ import userRoute from "./routes/user.js";
 import resultRoute from "./routes/result.js";
 import Cors from "cors";
 import user from "./models/user.js";
+import question from "./models/question.js";
 import "dotenv/config";
 const app = express();
 const port = process.env.PORT || 8000;
@@ -32,7 +33,7 @@ app.get("/", (req, res) => {
 // get question to auth user
 app.post("/getAll", (req, res) => {
   const user = req.body.username;
-  Question.find({ user: user }, (err, question) => {
+  question.find({ user: user }, (err, question) => {
     if (err) {
       console.log(err);
     } else {
