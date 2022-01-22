@@ -10,8 +10,8 @@ const app = express();
 const port = process.env.PORT || 8000;
 //connect MongoDB
 
-// const connections_url = process.env.DBURL;
-
+const connections_url = String(process.env.DBURL);
+console.log(connections_url);
 mongoose.connect(process.env.DBURL, {
   useNewUrlParser: true,
 
