@@ -6,7 +6,7 @@ const router = express.Router();
 import User from "../models/user.js";
 
 // result saving
-router.post("/add", (req, res) => {
+router.post("/add", async (req, res) => {
   let recieverID = req.body.recieverID;
   let answearUsername = req.body.answearUsername;
   let RightAnswer = req.body.RightAnswer;
