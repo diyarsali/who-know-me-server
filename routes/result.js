@@ -9,7 +9,7 @@ router.post("/add", (req, res) => {
   let recieverID = req.body.recieverID;
   let answearUsername = req.body.answearUsername;
   let RightAnswer = req.body.RightAnswer;
-  console.log(RightAnswer);
+  // console.log(RightAnswer);
 
   if (recieverID.match(/^[0-9a-fA-F]{24}$/)) {
     User.findById(recieverID, function (err, user) {
@@ -24,20 +24,22 @@ router.post("/add", (req, res) => {
             answearUsername: answearUsername,
           },
           (err, doc) => {
-            console.log(doc);
+            // console.log(doc);
             if (doc.length == 0) {
-              var saveResult = new Result({
-                user: user.username,
-                answearUsername: answearUsername,
-                rightAnswers: RightAnswer,
-              });
-              saveResult.save((err) => {
-                if (err) {
-                  console.log("Error saving Result into mongo");
-                  return;
+              Result.create(
+                {
+                  user: user.username,
+                  answearUsername: answearUsername,
+                  rightAnswers: RightAnswer,
+                },
+                (err) => {
+                  if (err) {
+                    console.log("Error saving Result into mongo");
+                    return;
+                  }
+                  console.log("Result inserted succussfully!");
                 }
-                console.log("Result inserted succussfully!");
-              });
+              );
             } else {
               Result.updateOne(
                 {
