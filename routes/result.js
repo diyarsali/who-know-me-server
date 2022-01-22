@@ -12,19 +12,17 @@ router.post("/add", async (req, res) => {
   let RightAnswer = req.body.RightAnswer;
   // console.log(RightAnswer);
 
-  if (recieverID.match(/^[0-9a-fA-F]{24}$/)) {
-    // const user = await User.find({ _id: recieverID });
-    const username = "diyar";
-    Result.findOneAndUpdate(
-      { user: username, answearUsername: answearUsername },
-      { $push: { rightAnswers: RightAnswer } },
-      { upsert: true },
-      function (err, doc) {
-        if (err) return console.log(err);
-        return console.log("inser successfully");
+  Result.create(
+    { user: "balen", answearUsername: answearUsername },
+    (err, data) => {
+      if (err) {
+        res.status(500).send(err);
+        console.log(err);
+      } else {
+        console.log("result insertt ");
       }
-    );
-  }
+    }
+  );
 });
 
 // to ensure user is answering to another user
