@@ -48,31 +48,33 @@ router.post("/Signup", (req, res) => {
 //Login Post
 router.post("/login", (req, res, next) => {
   let username = req.body.username;
-  // console.log(username);
+
   let password = req.body.password;
 
-  const user = User.findOne({ username: username });
-  if (!user) {
-    console.log("no user found");
-    res.send({ failedLoggingin: true });
-  } else {
-    bcrypt.compare(password, user.password, function (err, isMatch) {
-      if (err) console.log("password error");
-      if (isMatch) {
-        console.log("logged in ");
-        const token = jwt.sign(
-          { username: user.username, id: user._id },
-          "fdsfdsafdsafdasffdsaf"
-        );
+  User.findOne({ username: username }, (err, user) => {
+    if (!user) {
+      console.log("no user found");
+      res.send({ failedLoggingin: true });
+      return;
+    } else {
+      bcrypt.compare(password, user.password, function (err, isMatch) {
+        if (err) console.log("password error");
+        if (isMatch) {
+          console.log("logged in ");
+          const token = jwt.sign(
+            { username: user.username, id: user._id },
+            "fdsfdsafdsafdasffdsaf"
+          );
 
-        res.send({ login: true, token, id: user._id });
-        // console.log(token);
-      } else {
-        console.log("wrong password");
-        res.send({ failedLoggingin: true });
-      }
-    });
-  }
+          res.send({ login: true, token, id: user._id });
+          // console.log(token);
+        } else {
+          console.log("wrong password");
+          res.send({ failedLoggingin: true });
+        }
+      });
+    }
+  });
 });
 
 //get all userName
