@@ -27,7 +27,7 @@ app.use(Cors());
 // app.get("/", (req, res) => {
 //   res.status(200).send("im backend");
 // });
-router.post("/", (req, res) => {
+app.post("/", (req, res) => {
   let recieverID = req.body.recieverID;
   console.log(recieverID);
 });
