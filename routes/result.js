@@ -6,9 +6,25 @@ const router = express.Router();
 import User from "../models/user.js";
 
 // result saving
-router.post("/add", (req, res) => {
+router.post("/add", async (req, res) => {
   let recieverID = req.body.recieverID;
-  console.log(recieverID);
+  let answearUsername = req.body.answearUsername;
+  let RightAnswer = req.body.RightAnswer;
+  // console.log(RightAnswer);
+
+  if (recieverID.match(/^[0-9a-fA-F]{24}$/)) {
+    const user = await User.find({ _id: recieverID });
+    const username = user[0].username;
+    Result.findOneAndUpdate(
+      { user: username, answearUsername: answearUsername },
+      { $push: { rightAnswers: RightAnswer } },
+      { upsert: true },
+      function (err, doc) {
+        if (err) return console.log(err);
+        return console.log("inser successfully");
+      }
+    );
+  }
 });
 
 // to ensure user is answering to another user

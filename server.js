@@ -24,8 +24,12 @@ var db = mongoose.connection;
 app.use(express.json());
 app.use(Cors());
 
-app.get("/", (req, res) => {
-  res.status(200).send("im backend");
+// app.get("/", (req, res) => {
+//   res.status(200).send("im backend");
+// });
+router.post("/", (req, res) => {
+  let recieverID = req.body.recieverID;
+  console.log(recieverID);
 });
 
 app.use("/question", questionRoute);
