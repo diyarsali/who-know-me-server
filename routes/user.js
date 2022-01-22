@@ -47,12 +47,12 @@ router.post("/Signup", (req, res) => {
 });
 
 //Login Post
-router.post("/login", async (req, res, next) => {
+router.post("/login", (req, res, next) => {
   let username = req.body.username;
   // console.log(username);
   let password = req.body.password;
 
-  const user = await User.findOne({ username: username });
+  const user = User.findOne({ username: username });
   if (!user) {
     console.log("no user found");
     res.send({ failedLoggingin: true });

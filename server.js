@@ -4,6 +4,7 @@ import questionRoute from "./routes/question.js";
 import userRoute from "./routes/user.js";
 import resultRoute from "./routes/result.js";
 import Cors from "cors";
+import user from "./models/user.js";
 import "dotenv/config";
 const app = express();
 const port = process.env.PORT || 8000;
@@ -23,7 +24,9 @@ app.use(express.json());
 app.use(Cors());
 
 app.get("/", (req, res) => {
-  res.send("hellow world");
+  user.find((err, data) => {
+    res.status(200).send(data);
+  });
 });
 app.use("/question", questionRoute);
 app.use("/users", userRoute);
