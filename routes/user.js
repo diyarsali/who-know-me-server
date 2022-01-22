@@ -28,8 +28,7 @@ router.post("/Signup", (req, res) => {
             } else {
               const token = jwt.sign(
                 { username: dataUser.username, id: dataUser._id },
-                // "fdsfdsafdsafdasffdsaf"
-                process.env.TOKEN_SECRET
+                "fdsfdsafdsafdasffdsaf"
               );
 
               res.status(201).send({
@@ -63,7 +62,7 @@ router.post("/login", (req, res, next) => {
         console.log("logged in ");
         const token = jwt.sign(
           { username: user.username, id: user._id },
-          process.env.TOKEN_SECRET
+          "fdsfdsafdsafdasffdsaf"
         );
 
         res.send({ login: true, token, id: user._id });

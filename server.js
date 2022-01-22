@@ -4,8 +4,7 @@ import questionRoute from "./routes/question.js";
 import userRoute from "./routes/user.js";
 import resultRoute from "./routes/result.js";
 import Cors from "cors";
-import user from "./models/user.js";
-import question from "./models/question.js";
+
 import "dotenv/config";
 const app = express();
 const port = process.env.PORT || 8000;
@@ -25,27 +24,12 @@ app.use(express.json());
 app.use(Cors());
 
 app.get("/", (req, res) => {
-  user.find((err, data) => {
-    res.status(200).send(data);
-  });
+  res.status(200).send("im backend");
 });
 
-// get question to auth user
-app.post("/getAll", (req, res) => {
-  const user = req.body.username;
-  question.find({ user: user }, (err, question) => {
-    if (err) {
-      console.log(err);
-    } else {
-      // console.log(question);
-      res.send(question);
-    }
-  });
-});
-
-// app.use("/question", questionRoute);
-// app.use("/users", userRoute);
-// app.use("/result", resultRoute);
+app.use("/question", questionRoute);
+app.use("/users", userRoute);
+app.use("/result", resultRoute);
 
 //Bind connection to error event (to get notification of connection errors)
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
