@@ -7,6 +7,8 @@ import User from "../models/user.js";
 
 // result saving
 router.post("/add", async (req, res) => {
+  var start = performance.now();
+
   let recieverID = req.body.recieverID;
   let answearUsername = req.body.answearUsername;
   let RightAnswer = req.body.RightAnswer;
@@ -15,45 +17,19 @@ router.post("/add", async (req, res) => {
   if (recieverID.match(/^[0-9a-fA-F]{24}$/)) {
     const user = await User.find({ _id: recieverID });
     const username = user[0].username;
-    // console.log(username);
-
-    const result = await Result.find({
-      user: username,
-      answearUsername: answearUsername,
-    });
-    if (result.length === 0) {
-      Result.create(
-        {
-          user: username,
-          answearUsername: answearUsername,
-          rightAnswers: RightAnswer,
-        },
-        (err) => {
-          if (err) {
-            console.log("Error saving Result into mongo");
-            return;
-          }
-          console.log("Result created succussfully!");
-        }
-      );
-    } else {
-      Result.updateOne(
-        {
-          user: username,
-          answearUsername: answearUsername,
-        },
-        { $push: { rightAnswers: RightAnswer } },
-        (err, data) => {
-          if (err) {
-            console.log(err);
-            return;
-          }
-          console.log("updated result");
-          return;
-        }
-      );
-    }
+    Result.findOneAndUpdate(
+      { user: username, answearUsername: answearUsername },
+      { $push: { rightAnswers: RightAnswer } },
+      { upsert: true },
+      function (err, doc) {
+        if (err) return res.send(500, { error: err });
+        return console.log("inser successfully");
+      }
+    );
   }
+
+  var end = performance.now();
+  console.log(`Execution time: ${end - start} ms`);
 });
 
 // to ensure user is answering to another user
