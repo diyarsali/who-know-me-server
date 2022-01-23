@@ -25,9 +25,9 @@ var db = mongoose.connection;
 app.use(express.json());
 app.use(Cors());
 
-app.get("/", (req, res) => {
+app.post("/", (req, res) => {
   res.status(200).send("im backend");
-  console.log("im backend");
+  console.log(req.body);
 });
 
 app.use("/question", questionRoute);

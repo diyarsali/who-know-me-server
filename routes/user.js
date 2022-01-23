@@ -9,7 +9,6 @@ import verifyJWT from "../config/auth.js";
 router.post("/Signup", (req, res) => {
   let data = req.body;
 
-  let usernameAvailable = true;
   User.findOne({ username: data.username }).then((user) => {
     if (user) {
       console.log("user  " + user.username + " is a avaliable");
