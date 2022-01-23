@@ -25,7 +25,7 @@ router.post("/add", async (req, res) => {
           console.log(err);
           return;
         } else {
-          res.status(2001).send("inser successfully");
+          res.status(201).send("inser successfully");
           console.log("inser successfully");
           return;
         }
