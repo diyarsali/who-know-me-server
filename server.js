@@ -4,11 +4,10 @@ import questionRoute from "./routes/question.js";
 import userRoute from "./routes/user.js";
 import resultRoute from "./routes/result.js";
 import Cors from "cors";
-import timeout from "connect-timeout";
 
 import "dotenv/config";
 const app = express();
-app.use(timeout("5s"));
+
 const port = process.env.PORT || 8000;
 //connect MongoDB
 
@@ -26,12 +25,9 @@ var db = mongoose.connection;
 app.use(express.json());
 app.use(Cors());
 
-// app.get("/", (req, res) => {
-//   res.status(200).send("im backend");
-// });
-app.post("/", (req, res) => {
-  let recieverID = req.body.recieverID;
-  console.log(recieverID);
+app.get("/", (req, res) => {
+  res.status(200).send("im backend");
+  console.log("im backend");
 });
 
 app.use("/question", questionRoute);
