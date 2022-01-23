@@ -57,11 +57,11 @@ router.post("/getResult", (req, res) => {
   }
 });
 
-// router.post("/getResultToResult", (req, res) => {
-//   Result.find({ user: req.body.username }, (err, data) => {
-//     res.send(data);
-//     console.log(data);
-//   });
-// });
+router.post("/getResultToResult", (req, res) => {
+  Result.find({ user: req.body.username }, (err, data) => {
+    res.send(data);
+    console.log(data);
+  });
+});
 
 export default router;
