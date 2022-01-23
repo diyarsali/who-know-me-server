@@ -20,15 +20,8 @@ router.post("/add", async (req, res) => {
       { $push: { rightAnswers: RightAnswer } },
       { upsert: true },
       function (err, doc) {
-        if (err) {
-          res.status(500).send(err);
-          console.log(err);
-          return;
-        } else {
-          res.status(2001).send("inser successfully");
-          console.log("inser successfully");
-          return;
-        }
+        if (err) return console.log(err);
+        return console.log("inser successfully");
       }
     );
   }
@@ -50,7 +43,7 @@ router.post("/getResult", (req, res) => {
           answearUsername: answearUsername,
         },
         (err, data) => {
-          res.status(201).send(data[0]);
+          res.send(data[0]);
         }
       );
     });
