@@ -4,9 +4,11 @@ import questionRoute from "./routes/question.js";
 import userRoute from "./routes/user.js";
 import resultRoute from "./routes/result.js";
 import Cors from "cors";
+import timeout from "connect-timeout";
 
 import "dotenv/config";
 const app = express();
+app.use(timeout("5s"));
 const port = process.env.PORT || 8000;
 //connect MongoDB
 
