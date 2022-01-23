@@ -50,7 +50,7 @@ router.post("/getResult", (req, res) => {
           answearUsername: answearUsername,
         },
         (err, data) => {
-          res.status(2001).send(data[0]);
+          res.status(201).send(data[0]);
         }
       );
     });
